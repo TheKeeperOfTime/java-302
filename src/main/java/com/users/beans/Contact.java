@@ -24,26 +24,50 @@ public class Contact {
 	private String phoneNumber;
 	private boolean active;
 
+	private String twitterHandle;
+	private String facebookUrl;
+
 	protected Contact() {
 	}
 
-	public Contact(String firstName, String lastName, String email, String phoneNumber, boolean active, long userId) {
+	public Contact(String firstName, String lastName, String email, String phoneNumber, boolean active, long userId,
+			String twitterHandle, String facebookUrl) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.active = active;
 		this.userId = userId;
+		this.twitterHandle = twitterHandle;
+		this.facebookUrl = facebookUrl;
 	}
 
 	public Contact(long userId) {
 		this.userId = userId;
+		this.active = active;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", active=" + active + "]";
+				+ ", phoneNumber=" + phoneNumber + ", active=" + active + ", twitterHandle=" + twitterHandle
+				+ ", facebookUrl=" + facebookUrl + "]";
+	}
+
+	public String getTwitterHandle() {
+		return twitterHandle;
+	}
+
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+
+	public void setTwitterHandle(String twitterHandle) {
+		this.twitterHandle = twitterHandle;
+	}
+
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
 	}
 
 	public String getFirstName() {
