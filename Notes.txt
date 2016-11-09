@@ -1,3 +1,5 @@
+---------------------Step 1--------------------------
+
 1. Reflection
 Well, I understand that we're just putting security into the app. Making it so only the ADMIN can edit other USERS.
 
@@ -9,3 +11,8 @@ My only question is about the service annotation. I feel like it's very simple, 
 
 4. App changes
 Well, a USER can't edit other USERS, but an ADMIN can. That's pretty much it, unless I missed something. 
+
+
+---------------------Step 2------------------------------------
+
+
