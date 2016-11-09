@@ -2,10 +2,12 @@ package com.users.controller;
 
 import java.util.List;
 import java.util.Optional;
+import static com.users.security.Role.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -32,9 +34,26 @@ public class IndexController {
 
 	@Autowired
 	private UserImageRepository userImageRepo;
-	
+
 	@Autowired
 	private PermissionService permissionService;
+
+	@RequestMapping("/")
+	public String home(Model model) {
+		return permissionService.hasRole(ROLE_ADMIN) ? "redirect:/users" : "redirect:/contacts";
+	}
+
+	@Secured("ROLE_ADMIN")
+	@RequestMapping("/users")
+	public String listUsers(Model model) {
+		model.addAttribute("users", userRepo.findAllByOrderByFirstNameAscLastNameAsc());
+		return "listUsers";
+	}
+
+	@RequestMapping("/myprofile")
+	public String myprofile(Model model) {
+		return profile(permissionService.findCurrentUserId(), model);
+	}
 
 	@RequestMapping("/greeting")
 	public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
@@ -42,12 +61,6 @@ public class IndexController {
 		model.addAttribute("name", name);
 		model.addAttribute("repoCount", userRepo.count());
 		return "greeting";
-	}
-
-	@RequestMapping("/")
-	public String listing(Model model) {
-		model.addAttribute("users", userRepo.findAllByOrderByFirstNameAscLastNameAsc());
-		return "list";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -71,7 +84,7 @@ public class IndexController {
 	public String profileEdit(@PathVariable long userId, Model model) {
 		model.addAttribute("user", userRepo.findOne(userId));
 
-		if (!permissionService.canEditUser(userId)) {
+		if (!permissionService.canAccessUser(userId)) {
 			log.warn("Cannot allow user to edit " + userId);
 			return "profile";
 		}
@@ -88,7 +101,7 @@ public class IndexController {
 			@RequestParam(name = "removeImage", defaultValue = "false") boolean removeImage,
 			@RequestParam("file") MultipartFile file, Model model) {
 
-		if (!permissionService.canEditUser(userId)) {
+		if (!permissionService.canAccessUser(userId)) {
 			log.warn("Cannot allow user to edit " + userId);
 			return "profile";
 		}

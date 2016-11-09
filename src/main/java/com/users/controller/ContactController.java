@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -34,9 +35,8 @@ public class ContactController {
 	@Autowired
 	private PermissionService permissionService;
 
-	// Just a way to list contacts? I mean, I can't explain fully what it's
-	// doing, but it is bringing in all of the users
-	// id's and displaying them on a page. Oh yeah, this name is so long!
+	// So this is connecting it to the security config file.
+	@Secured("ROLE_USER")
 	@RequestMapping("/contacts")
 	public String listContacts(Model model) {
 		long currentUserId = permissionService.findCurrentUserId();
@@ -44,6 +44,7 @@ public class ContactController {
 		return "listContacts";
 	}
 
+	@Secured("ROLE_USER")
 	@RequestMapping("/contact/{contactId}")
 	public String contact(@PathVariable long contactId, Model model) {
 		model.addAttribute("contact", contactRepo.findOne(contactId));
@@ -56,7 +57,7 @@ public class ContactController {
 		return "contact";
 	}
 
-
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/contact/{contactId}/edit", method = RequestMethod.GET)
 	public String contactEdit(@PathVariable long contactId, Model model) {
 		model.addAttribute("contact", contactRepo.findOne(contactId));
@@ -73,9 +74,7 @@ public class ContactController {
 		return "contactEdit";
 	}
 
-	
-	
-
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/contact/{contactId}/edit", method = RequestMethod.POST)
 	public String profileSave(@ModelAttribute Contact contact, @PathVariable long contactId,
 			@RequestParam(name = "removeImage", defaultValue = "false") boolean removeImage,
@@ -93,8 +92,7 @@ public class ContactController {
 		if (!file.isEmpty()) {
 			try {
 				List<ContactImage> images = contactImageRepo.findByContactId(contact.getId());
-				ContactImage img = (images.size() > 0) ? images.get(0)
-						: new ContactImage(contactId);
+				ContactImage img = (images.size() > 0) ? images.get(0) : new ContactImage(contactId);
 				img.setContentType(file.getContentType());
 				img.setImage(file.getBytes());
 				contactImageRepo.save(img);
@@ -115,5 +113,24 @@ public class ContactController {
 		}
 
 		return contact(contactId, model);
+	}
+
+	//Well, these are used to create contacts. 
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/contact/create", method = RequestMethod.GET)
+	public String createContact(Model model) {
+		model.addAttribute("contact", new Contact(permissionService.findCurrentUserId()));
+
+		return "contactCreate";
+	}
+	//This has a save method in it that would be very useful to use in other things. Or at least to know how to use it. 
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/contact/create", method = RequestMethod.POST)
+	public String createContact(@ModelAttribute Contact contact, @RequestParam("file") MultipartFile file,
+			Model model) {
+
+		Contact savedContact = contactRepo.save(contact);
+
+		return profileSave(savedContact, savedContact.getId(), false, file, model);
 	}
 }

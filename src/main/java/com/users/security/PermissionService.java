@@ -42,8 +42,8 @@ public class PermissionService {
 
 	// This is saying that an ADMIN can edit USERS, but a USER can't edit
 	// another USER
-	public boolean canEditUser(long userId) {
-		return hasRole(ADMIN) || (hasRole(USER) && findCurrentUserId() == userId);
+	public boolean canAccessUser(long userId) {
+		return hasRole(ROLE_ADMIN) || (hasRole(USER_ADMIN) && findCurrentUserId() == userId);
 	}
 
 	// So, maybe this is finding all the users, but not the admins? I see that
@@ -51,7 +51,7 @@ public class PermissionService {
 	// I don't exactly know, though. This would be something to further look at,
 	// or even ask about.
 	public boolean canEditContact(long contactId) {
-		return hasRole(USER) && contactRepo.findByUserIdAndId(findCurrentUserId(), contactId) != null;
+		return hasRole(USER_ADMIN) && contactRepo.findByUserIdAndId(findCurrentUserId(), contactId) != null;
 	}
 
 }

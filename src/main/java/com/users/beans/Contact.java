@@ -27,8 +27,7 @@ public class Contact {
 	protected Contact() {
 	}
 
-	public Contact(String firstName, String lastName, String email, String phoneNumber,
-			boolean active, long userId) {
+	public Contact(String firstName, String lastName, String email, String phoneNumber, boolean active, long userId) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -37,10 +36,14 @@ public class Contact {
 		this.userId = userId;
 	}
 
+	public Contact(long userId) {
+		this.userId = userId;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
-				+ email + ", phoneNumber=" + phoneNumber + ", active=" + active + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", phoneNumber=" + phoneNumber + ", active=" + active + "]";
 	}
 
 	public String getFirstName() {
