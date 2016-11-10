@@ -1,12 +1,16 @@
 package com.users.security;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+
+import java.util.List;
+
 import static com.users.security.Role.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import com.users.beans.User;
 import com.users.repositories.ContactRepository;
 import com.users.repositories.UserRepository;
 
@@ -37,7 +41,8 @@ public class PermissionService {
 	// Maybe searching for users? That would be my guess by looking at this. It
 	// will find the Id connected to the email.
 	public long findCurrentUserId() {
-		return userRepo.findByEmail(getToken().getName()).get(0).getId();
+		List<User> users = userRepo.findByEmail(getToken().getName());
+		return users != null && !users.isEmpty() ? users.get(0).getId() : -1;
 	}
 
 	// This is saying that an ADMIN can edit USERS, but a USER can't edit
@@ -52,6 +57,15 @@ public class PermissionService {
 	// or even ask about.
 	public boolean canEditContact(long contactId) {
 		return hasRole(USER_ADMIN) && contactRepo.findByUserIdAndId(findCurrentUserId(), contactId) != null;
+	}
+
+	public String getCurrentEmail() {
+		return getToken().getName();
+	}
+
+	public User findCurrentUser() {
+		List<User> users = userRepo.findByEmail(getToken().getName());
+		return users != null && !users.isEmpty() ? users.get(0) : new User();
 	}
 
 }

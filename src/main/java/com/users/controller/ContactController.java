@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import static org.h2.util.StringUtils.isNullOrEmpty;
 
 import com.users.beans.Contact;
 import com.users.beans.ContactImage;
+import com.users.beans.User;
 import com.users.repositories.ContactImageRepository;
 import com.users.repositories.ContactRepository;
 import com.users.security.PermissionService;
@@ -115,7 +117,7 @@ public class ContactController {
 		return contact(contactId, model);
 	}
 
-	//Well, these are used to create contacts. 
+	// Well, these are used to create contacts.
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/contact/create", method = RequestMethod.GET)
 	public String createContact(Model model) {
@@ -123,7 +125,9 @@ public class ContactController {
 
 		return "contactCreate";
 	}
-	//This has a save method in it that would be very useful to use in other things. Or at least to know how to use it. 
+
+	// This has a save method in it that would be very useful to use in other
+	// things. Or at least to know how to use it.
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/contact/create", method = RequestMethod.POST)
 	public String createContact(@ModelAttribute Contact contact, @RequestParam("file") MultipartFile file,
@@ -133,4 +137,35 @@ public class ContactController {
 
 		return profileSave(savedContact, savedContact.getId(), false, file, model);
 	}
+	
+	//I think that this is displaying ways to get in contact with people, and also a method to send mail. 
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/email/contact/{contactId}", method = RequestMethod.GET)
+	public String prepEmailContact(@PathVariable long contactId, Model model) {
+		User user = permissionService.findCurrentUser();
+		Contact contact = contactRepo.findByUserIdAndId(user.getId(), contactId);
+
+		StringBuilder message = new StringBuilder().append("Your friend ").append(user.getFirstName()).append(" ")
+				.append(user.getLastName()).append(" has forwarded you the following contact:\n\n")
+				.append(contact.getFirstName()).append(" ").append(contact.getLastName()).append("\n");
+		if (!isNullOrEmpty(contact.getEmail())) {
+			message.append("Email: ").append(contact.getEmail()).append("\n");
+		}
+		if (!isNullOrEmpty(contact.getPhoneNumber())) {
+			message.append("Phone: ").append(contact.getPhoneNumber()).append("\n");
+		}
+		if (!isNullOrEmpty(contact.getTwitterHandle())) {
+			message.append("Twitter: ").append(contact.getTwitterHandle()).append("\n");
+		}
+		if (!isNullOrEmpty(contact.getFacebookUrl())) {
+			message.append("Facebook: ").append(contact.getFacebookUrl()).append("\n");
+		}
+
+		model.addAttribute("message", message.toString());
+		model.addAttribute("pageTitle", "Forward Contact");
+		model.addAttribute("subject", "Introducing " + contact.getFirstName() + " " + contact.getLastName());
+
+		return "sendMail";
+	}
+
 }
