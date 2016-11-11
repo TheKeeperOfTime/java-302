@@ -3,27 +3,27 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="layouts/basic">
 <head>
-<title>User</title>
+<title>Contact</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body layout:fragment="content">
-	<h1>User</h1>
-	<img id="avatar" src="" th:if="${userImage}"
-		th:src="${userImage.htmlSrc}" alt="Profile Image"
+	<h1>contact</h1>
+	<img id="avatar" src="" th:if="${contactImage}"
+		th:src="${contactImage.htmlSrc}" alt="Profile Image"
 		title="Profile Image" />
-	<ul th:object="${user}">
+	<ul th:object="${contact}">
 		<li th:text="*{firstName}"></li>
 		<li th:text="*{lastName}"></li>
 		<li th:text="*{email}"></li>
 		<li th:text="*{phoneNumber}"></li>
+		<li><a href="/" th:href="@{|/contact/${contact.id}/edit|}">Edit</a></li>
 		<li th:if="*{! #strings.isEmpty(twitterHandle)}"><a
 			target="_blank" th:href="@{|https://twitter.com/*{twitterHandle}|}"
 			th:text="*{twitterHandle}"></a></li>
 		<li th:if="*{! #strings.isEmpty(facebookUrl)}"><a target="_blank"
 			th:href="@{|*{facebookUrl}|}" th:text="*{facebookUrl}"></a></li>
 
-		
 	</ul>
-	<a href="/">Back</a>
+	<a href="/contacts">Back</a>
 </body>
 </html>
