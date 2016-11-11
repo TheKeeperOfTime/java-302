@@ -37,7 +37,6 @@ public class ContactController {
 	@Autowired
 	private PermissionService permissionService;
 
-
 	@Secured("ROLE_USER")
 	@RequestMapping("/contacts")
 	public String listContacts(Model model) {
@@ -167,6 +166,17 @@ public class ContactController {
 		model.addAttribute("subject", "Introducing " + contact.getFirstName() + " " + contact.getLastName());
 
 		return "sendMail";
+	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/contact/search", method = RequestMethod.POST)
+	public String searchUsers(@RequestParam("search") String search, Model model) {
+		log.debug("Searching by " + search);
+		model.addAttribute("contacts",
+				contactRepo.findByLastNameOrFirstNameOrEmailOrTwitterHandleOrFacebookUrlIgnoreCase(search, search,
+						search, search, search));
+		model.addAttribute("search", search);
+		return "listContacts";
 	}
 
 }

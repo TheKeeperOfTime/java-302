@@ -2,7 +2,6 @@ package com.users.controller;
 
 import static com.users.security.Role.*;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +92,7 @@ public class IndexController {
 	public String profile(@PathVariable long userId, Model model) {
 		model.addAttribute("user", userRepo.findOne(userId));
 
-		if(!permissionService.canAccessUser(userId)) {
+		if (!permissionService.canAccessUser(userId)) {
 			log.warn("Cannot allow user to edit " + userId);
 			return "profile";
 		}
@@ -127,7 +126,7 @@ public class IndexController {
 			@RequestParam(name = "removeImage", defaultValue = "false") boolean removeImage,
 			@RequestParam("file") MultipartFile file, Model model) {
 
-		if(!permissionService.canAccessUser(userId)) {
+		if (!permissionService.canAccessUser(userId)) {
 			log.warn("Cannot allow user to edit " + userId);
 			return "profile";
 		}
@@ -182,4 +181,15 @@ public class IndexController {
 
 		return "sendMail";
 	}
+
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/user/search", method = RequestMethod.POST)
+	public String searchUsers(@RequestParam("search") String search, Model model) {
+		log.debug("Searching by " + search);
+		model.addAttribute("users", userRepo.findByLastNameOrFirstNameOrEmailOrTwitterHandleOrFacebookUrlIgnoreCase(
+				search, search, search, search, search));
+		model.addAttribute("search", search);
+		return "listUsers";
+	}
+
 }
