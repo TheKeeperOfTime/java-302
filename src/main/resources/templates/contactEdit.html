@@ -1,73 +1,75 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/basic">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/basic">
 <head>
-    <title>Contact Edit</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
-    <style type="text/css">
-    	.field {
-    		display: block;
-    		margin-bottom: 5px;
-    	}
-    	
-    	.field input, .field select {
-    		float: right;
-    		width: 170px;
-    	}
+<title>Contact Edit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    	form {
-    		width: 290px;
-    	}
-    </style>
+<style type="text/css">
+.field {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.field input, .field select {
+	float: right;
+	width: 170px;
+}
+
+form {
+	width: 290px;
+}
+</style>
 </head>
 <body layout:fragment="content">
 	<h1>Contact</h1>
-	<form th:action="@{|/contact/${contact.id}/edit|}" enctype="multipart/form-data" method="POST">
-		<input name="id" type="hidden" th:value="${contact.id}"/>
-		<input name="userId" type="hidden" th:value="${contact.userId}"/>
-			
+	<form th:action="@{|/contact/${contact.id}/edit|}"
+		enctype="multipart/form-data" method="POST">
+		<input name="id" type="hidden" th:value="${contact.id}" /> <input
+			name="userId" type="hidden" th:value="${contact.userId}" />
+
 		<div class="field">
-			<label for="firstName">First Name</label>
-			<input name="firstName" type="text" th:value="${contact.firstName}"/>
+			<label for="firstName">First Name</label> <input name="firstName"
+				type="text" th:value="${contact.firstName}" />
 		</div>
-		
+
 		<div class="field">
-			<label for="lastName">Last Name</label>
-			<input name="lastName" type="text" th:value="${contact.lastName}"/>
+			<label for="lastName">Last Name</label> <input name="lastName"
+				type="text" th:value="${contact.lastName}" />
 		</div>
-		
+
 		<div class="field">
-			<label for="email">Email</label>
-			<input name="email" type="text" th:value="${contact.email}"/>
+			<label for="email">Email</label> <input name="email" type="text"
+				th:value="${contact.email}" />
 		</div>
-		
+
 		<div class="field">
-			<label for="phoneNumber">Phone Number</label>
-			<input name="phoneNumber" type="text" th:value="${contact.phoneNumber}"/>
+			<label for="phoneNumber">Phone Number</label> <input
+				name="phoneNumber" type="text" th:value="${contact.phoneNumber}" />
 		</div>
-		
+
 		<div class="field">
-          <label for="twitterHandle">Twitter Handle</label>
-          <input name="twitterHandle" type="text" th:value="${contact.twitterHandle}"/>
-        </div>
-        
-        <div class="field">
-          <label for="facebookUrl">Facebook URL</label>
-          <input name="facebookUrl" type="text" th:value="${contact.facebookUrl}"/>
-        </div>
-		
-		<div class="field">
-			<label for="file">Image</label>
-			<input name="file" type="file"/>
+			<label for="twitterHandle">Twitter Handle</label> <input
+				name="twitterHandle" type="text" th:value="${contact.twitterHandle}" />
 		</div>
-		
+
 		<div class="field">
-			<label for="removeImage">Remove Image?</label>
-			<input name="removeImage" type="checkbox" value="true"/>
+			<label for="facebookUrl">Facebook URL</label> <input
+				name="facebookUrl" type="text" th:value="${contact.facebookUrl}" />
 		</div>
-		
-		<input type="submit" th:value="Update"/>
-		<a href="/contacts" th:href="@{|/contact/${contact.id}|}">Back</a>
+
+		<div class="field">
+			<label for="file">Image</label> <input name="file" type="file" />
+		</div>
+
+		<div class="field">
+			<label for="removeImage">Remove Image?</label> <input
+				name="removeImage" type="checkbox" value="true" />
+		</div>
+
+		<input type="submit" th:value="Update" /> <a href="/contacts"
+			th:href="@{|/contact/${contact.id}|}">Back</a>
 	</form>
 </body>
 </html>

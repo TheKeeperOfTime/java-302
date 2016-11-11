@@ -1,10 +1,5 @@
 package com.users.beans;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "emails")
 public class Email {
 
 	private String to;
@@ -12,9 +7,7 @@ public class Email {
 	private String message;
 	private String custom;
 
-	public Email() {
-
-	}
+	public Email() {}
 
 	public Email(String to, String subject, String message, String custom) {
 		this.to = to;
@@ -27,28 +20,28 @@ public class Email {
 		return to;
 	}
 
-	public String getSubject() {
-		return subject;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public String getCustom() {
-		return custom;
-	}
-
 	public void setTo(String to) {
 		this.to = to;
+	}
+
+	public String getSubject() {
+		return subject;
 	}
 
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
 
+	public String getMessage() {
+		return message;
+	}
+
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getCustom() {
+		return custom;
 	}
 
 	public void setCustom(String custom) {

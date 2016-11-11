@@ -26,6 +26,10 @@
 					<li sec:authorize="isAuthenticated()"
 						th:class="${#httpServletRequest.requestURI.equals('/myprofile')?'active':null}"><a
 						href="#" th:href="@{/myprofile}">My Profile</a></li>
+					<li sec:authorize="isAuthenticated()"
+						th:class="${#httpServletRequest.requestURI.equals('/email/user')?'active':null}"><a
+						href="#" th:href="@{/email/user}">Invite User</a></li>
+
 				</ul>
 				<ul class="nav navbar-nav navbar-right"
 					sec:authorize="isAuthenticated()">

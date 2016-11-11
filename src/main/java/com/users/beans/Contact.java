@@ -23,15 +23,21 @@ public class Contact {
 	private String email;
 	private String phoneNumber;
 	private boolean active;
-
 	private String twitterHandle;
 	private String facebookUrl;
 
+	
 	protected Contact() {
 	}
+	
+	public Contact(long userId) {
+		this.userId = userId;
+		this.active = true;
+	}
 
-	public Contact(String firstName, String lastName, String email, String phoneNumber, boolean active, long userId,
-			String twitterHandle, String facebookUrl) {
+
+	public Contact(String firstName, String lastName, String email, String phoneNumber,
+			boolean active, long userId, String twitterHandle, String facebookUrl) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -42,28 +48,22 @@ public class Contact {
 		this.facebookUrl = facebookUrl;
 	}
 
-	public Contact(long userId) {
-		this.userId = userId;
-		this.active = active;
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", active=" + active + ", twitterHandle=" + twitterHandle
-				+ ", facebookUrl=" + facebookUrl + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+				+ email + ", phoneNumber=" + phoneNumber + ", active=" + active +", twitterHandle=" + twitterHandle + ", facebookUrl=" + facebookUrl + "]";
 	}
 
 	public String getTwitterHandle() {
 		return twitterHandle;
 	}
 
-	public String getFacebookUrl() {
-		return facebookUrl;
-	}
-
 	public void setTwitterHandle(String twitterHandle) {
 		this.twitterHandle = twitterHandle;
+	}
+
+	public String getFacebookUrl() {
+		return facebookUrl;
 	}
 
 	public void setFacebookUrl(String facebookUrl) {

@@ -18,8 +18,6 @@ public class ImageService {
 
 	@Autowired
 	private UserImageRepository userImageRepo;
-	
-	
 
 	public void saveImage(MultipartFile file, User user) {
 

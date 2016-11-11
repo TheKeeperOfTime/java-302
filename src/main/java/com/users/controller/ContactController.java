@@ -37,7 +37,7 @@ public class ContactController {
 	@Autowired
 	private PermissionService permissionService;
 
-	// So this is connecting it to the security config file.
+
 	@Secured("ROLE_USER")
 	@RequestMapping("/contacts")
 	public String listContacts(Model model) {
@@ -137,8 +137,9 @@ public class ContactController {
 
 		return profileSave(savedContact, savedContact.getId(), false, file, model);
 	}
-	
-	//I think that this is displaying ways to get in contact with people, and also a method to send mail. 
+
+	// I think that this is displaying ways to get in contact with people, and
+	// also a method to send mail.
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/email/contact/{contactId}", method = RequestMethod.GET)
 	public String prepEmailContact(@PathVariable long contactId, Model model) {
